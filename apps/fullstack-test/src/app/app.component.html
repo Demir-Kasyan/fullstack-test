@@ -12,7 +12,7 @@
       <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
   <mat-form-field>
-    <input matInput type="email" placeholder="Email">
+    <input [(ngModel)]="user.email" matInput type="email" placeholder="Email">
   </mat-form-field>
   <mat-form-field>
       <mat-label>Gender</mat-label>
@@ -43,7 +43,9 @@
   <button (click)="submit()">SUBMIT</button>
   <button (click)="reset()">RESET</button>
 </div>
-
+<mat-form-field>
+  <input matInput [(ngModel)]="search" placeholder="Search">
+</mat-form-field>
 <div class="example-container mat-elevation-z8">
 
   <mat-table [dataSource]="dataSource" matSort>
@@ -76,6 +78,11 @@
     <ng-container matColumnDef="country">
       <mat-header-cell *matHeaderCellDef> Country </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{row.country}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="state">

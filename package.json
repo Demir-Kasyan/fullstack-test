@@ -6,8 +6,14 @@
     "ng": "nx",
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2020 browser module main",
     "start": "nx serve",
+    "server": "nx run api:serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "client-demo-build": "ng build client-demo --prod",
+    "client-demo-image": "docker image build -f Dockerfile.client-demo -t client-demo-app .",
+    "client-demo-run": "docker-compose -f docker-compose.client-demo.yml up",
+    "client-demo-stop": "docker-compose -f docker-compose.client-demo.yml down",
+    "client-demo": "yarn client-demo-build && yarn client-demo-image && yarn client-demo-run" 
   },
   "private": true,
   "dependencies": {

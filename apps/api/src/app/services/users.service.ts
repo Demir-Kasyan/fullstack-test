@@ -12,8 +12,13 @@ export class UsersService {
       return newUser.save();
   }
 
-  async readAll(): Promise<User[]> {
-      return await this.userModel.find().exec();
+  async readAll(params): Promise<User[]> {
+      return await this.userModel
+      .find(params.search)
+      .sort({id: -1})
+      .skip(params.skip)
+      .limit(params.limit)
+      .exec();
   }
 
   async readById(id): Promise<User> {

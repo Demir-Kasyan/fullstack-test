@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
@@ -10,15 +9,17 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  private api: string = '';
+  private api: string = ' http://localhost:3333/';
   displayedColumns = ['id', 'firstName', 'lastName', 'dateOfBirth','gender','state','country','city','address','pincode','remove','update'];
   dataSource: MatTableDataSource<any>;
+  search: string = '';
   user: any = {
     id: -1,
     firstName: '',
     lastName: '',
     dateOfBirth: '',
     gender: '',
+    email: '',
     state: '',
     city: '',
     address: '',
@@ -27,7 +28,10 @@ export class AppComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private httpClient: HttpClient) {
-    const users: any[] = [];
+    let users: any[] = [];
+    httpClient.get<any[]>(this.api).subscribe(data => {
+      users = data;
+    });
     this.dataSource = new MatTableDataSource(users);
   }
 
@@ -51,6 +55,7 @@ export class AppComponent {
       lastName: '',
       dateOfBirth: '',
       gender: '',
+      email: '',
       state: '',
       city: '',
       address: '',
@@ -59,6 +64,13 @@ export class AppComponent {
   }
   update(id: number): void{
     this.user = this.httpClient.get(this.api+'/'+id);
+  }
+  refresh(): void{
+    let users: any[] = [];
+    this.httpClient.get<any[]>(this.api + '?search=' + this.search + '&skip=' + this.paginator.pageSize * this.paginator.pageIndex + '&limit=' + this.paginator.pageSize).subscribe(data => {
+      users = data;
+    });
+    this.dataSource = new MatTableDataSource(users);
   }
   remove(id: number): void{
     this.httpClient.delete(this.api+'/'+id);

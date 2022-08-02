@@ -15,8 +15,9 @@ export class UsersController {
   }
 
   @Get()
-  async fetchAll(@Res() response) {
-      const users = await this.usersService.readAll();
+  async fetchAll(@Param() params, @Res() response) {
+    console.log(params);
+      const users = await this.usersService.readAll(params);
       return response.status(HttpStatus.OK).json({
           users
       })
